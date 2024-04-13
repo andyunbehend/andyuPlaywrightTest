@@ -1,12 +1,15 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
+test.beforeEach(async ({ page }) => {
+  //configures a before hook to open the login page for each test 
   await page.goto('https://the-internet.herokuapp.com/login');
+});
+
+test('has title', async ({ page }) => {
   await expect(page).toHaveTitle("The Internet");
 });
 
 test('Login', async ({ page }) => {
-    await page.goto('https://the-internet.herokuapp.com/login');
     await page.getByLabel('Username').fill('tomsmith');
     await page.getByLabel('Password').fill('SuperSecretPassword!');
     await page.getByLabel('Password').press('Enter');
@@ -15,7 +18,6 @@ test('Login', async ({ page }) => {
   });
 
   test('Invalid Username', async ({ page }) => {
-    await page.goto('https://the-internet.herokuapp.com/login');
     await page.getByLabel('Username').fill('burrito');
     await page.getByLabel('Password').fill('superSecretPassword!');
     await page.getByRole('button', { name: 'Login' }).click();
@@ -23,7 +25,6 @@ test('Login', async ({ page }) => {
   });  
 
   test('Invalid Password', async ({ page }) => {
-    await page.goto('https://the-internet.herokuapp.com/login');
     await page.getByLabel('Username').fill('tomsmith');
     await page.getByLabel('Password').fill('Burrito1982');
     await page.getByRole('button', { name: 'Login' }).click();
@@ -32,7 +33,6 @@ test('Login', async ({ page }) => {
   });
 
   test('log out button', async ({ page }) => {
-    await page.goto('https://the-internet.herokuapp.com/login');
     await page.getByLabel('Username').fill('tomsmith');
     await page.getByLabel('Password').fill('SuperSecretPassword!');
     await page.getByLabel('Password').press('Enter');
